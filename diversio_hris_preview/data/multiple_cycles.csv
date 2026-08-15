@@ -1,0 +1,13 @@
+employee_id,employee_name,email,manager_id,manager_email,department
+E-ROOT,CEO,ceo@company.com,,,Executive
+E-S1,Sales Manager,s1@company.com,E-ROOT,,Sales
+E-S2,Sales Rep,s2@company.com,E-S1,,Sales
+E-E1,Engineering Manager,e1@company.com,E-ROOT,,Engineering
+E-E2,Engineer,e2@company.com,E-E1,,Engineering
+E-CYC-A1,Cycle A Person 1,cyc-a1@company.com,E-CYC-A2,,Operations
+E-CYC-A2,Cycle A Person 2,cyc-a2@company.com,E-CYC-A3,,Operations
+E-CYC-A3,Cycle A Person 3,cyc-a3@company.com,E-CYC-A1,,Operations
+E-CYC-B1,Cycle B Person 1,cyc-b1@company.com,E-CYC-B2,,HR
+E-CYC-B2,Cycle B Person 2,cyc-b2@company.com,E-CYC-B3,,HR
+E-CYC-B3,Cycle B Person 3,cyc-b3@company.com,E-CYC-B4,,HR
+E-CYC-B4,Cycle B Person 4,cyc-b4@company.com,E-CYC-B1,,HR

@@ -1,0 +1,18 @@
+{% if page.total %}
+  <table>
+    <thead><tr><th>Source row</th><th>employee_id</th><th>Name</th><th>Department</th></tr></thead>
+    <tbody>
+    {% for employee in page.rows %}
+      <tr>
+        <td class="num">{{ employee.line_number }}</td>
+        <td>{{ employee.employee_id }}</td>
+        <td>{{ employee.employee_name|default:"—" }}</td>
+        <td>{{ employee.department|default:"—" }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% include "preview/_pagination.html" with page=page label=label %}
+{% else %}
+  <p class="empty">{{ empty_message }}</p>
+{% endif %}

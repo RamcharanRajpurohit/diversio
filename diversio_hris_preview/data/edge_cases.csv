@@ -1,0 +1,15 @@
+employee_id,employee_name,email,manager_id,manager_email,department
+E-ROOT,Root Person,root@example.com,,,Executive
+E-DUP,First Claimant,first@example.com,E-ROOT,,Operations
+E-DUP,Second Claimant,second@example.com,E-ROOT,,Operations
+E-M1,Mail One,shared@example.com,E-ROOT,,Operations
+E-M2,Mail Two,shared@example.com,E-ROOT,,Operations
+,Missing Id,noid@example.com,E-ROOT,,Operations
+E-NOMAIL,Missing Email,,E-ROOT,,Operations
+E-SELF,Self Manager,self@example.com,E-SELF,,Operations
+E-ORPHAN,Points At Duplicate,orphan@example.com,E-DUP,,Operations
+E-TAIL1,Tail One,tail1@example.com,E-TAIL2,,Research
+E-TAIL2,Tail Two,tail2@example.com,E-CYC1,,Research
+E-CYC1,Cycle One,cyc1@example.com,E-CYC2,,Research
+E-CYC2,Cycle Two,cyc2@example.com,E-CYC3,,Research
+E-CYC3,Cycle Three,cyc3@example.com,E-CYC1,,Research

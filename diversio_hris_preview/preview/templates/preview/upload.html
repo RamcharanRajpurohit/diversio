@@ -1,0 +1,52 @@
+{% extends "preview/base.html" %}
+
+{% block content %}
+<h1>Diversio HRIS import preview</h1>
+<p class="muted">
+  Upload a client HRIS export to inspect its hierarchy and find data problems.
+  Nothing is written to the platform.
+</p>
+
+{% if file_error %}
+  <div class="error">
+    <strong>{{ filename }} could not be read.</strong>
+    <p>{{ file_error }}</p>
+  </div>
+{% endif %}
+
+{% if form.errors %}
+  <div class="error">
+    {% for error in form.csv_file.errors %}<p>{{ error }}</p>{% endfor %}
+  </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="upload-row">
+    <div class="upload-field">
+      <label for="{{ form.csv_file.id_for_label }}">{{ form.csv_file.label }}</label>
+      {{ form.csv_file }}
+    </div>
+    <button class="upload-submit is-hidden" type="submit">Run preview</button>
+  </div>
+</form>
+
+<script>
+  const csvInput = document.getElementById("{{ form.csv_file.id_for_label }}");
+  const submitButton = document.querySelector(".upload-submit");
+
+  function updateSubmitVisibility() {
+    submitButton.classList.toggle("is-hidden", !csvInput.value);
+  }
+
+  csvInput.addEventListener("change", updateSubmitVisibility);
+  updateSubmitVisibility();
+</script>
+
+<h2>Expected columns</h2>
+<p>
+  <code>employee_id</code>, <code>employee_name</code>, <code>email</code>,
+  <code>manager_id</code>, <code>manager_email</code>, <code>department</code>
+  &mdash; in any order. UTF-8, with or without a byte-order mark.
+</p>
+{% endblock %}

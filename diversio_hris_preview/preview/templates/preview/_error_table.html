@@ -1,0 +1,17 @@
+{% if page.total %}
+  <table>
+    <thead><tr><th>Source row</th><th>employee_id</th><th>Problem</th></tr></thead>
+    <tbody>
+    {% for error in page.rows %}
+      <tr>
+        <td class="num">{{ error.line_number }}</td>
+        <td>{{ error.employee_id|default:"—" }}</td>
+        <td>{{ error.message }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% include "preview/_pagination.html" with page=page label=label %}
+{% else %}
+  <p class="empty">{{ empty_message }}</p>
+{% endif %}

@@ -1,0 +1,62 @@
+{% extends "preview/base.html" %}
+{% block title %}Diversio import preview &mdash; {{ filename }}{% endblock %}
+
+{% block content %}
+<h1>Diversio import preview</h1>
+<p class="muted">{{ filename }} &mdash; <a href="{% url 'import-preview' %}">upload another file</a></p>
+
+<div class="cards">
+  <div class="card"><b>{{ result.total_rows }}</b>source rows</div>
+  <div class="card"><b>{{ result.employees|length }}</b>accepted</div>
+  <div class="card"><b>{{ result.identity_errors|length }}</b>rows rejected</div>
+  <div class="card"><b>{{ result.manager_errors|length }}</b>manager errors</div>
+  <div class="card"><b>{{ result.roots|length }}</b>roots</div>
+  <div class="card"><b>{{ result.relationships }}</b>relationships</div>
+  <div class="card"><b>{{ result.cyclic_employees|length }}</b>in cycles</div>
+</div>
+
+<h2>Rejected rows ({{ result.identity_errors|length }})</h2>
+<p class="muted">
+  These rows failed identity validation. They are excluded from manager lookup
+  and hierarchy analysis.
+</p>
+{% include "preview/_error_table.html" with page=identity_errors_page label="Rejected rows" empty_message="Every row passed identity validation." %}
+
+<h2>Manager errors ({{ result.manager_errors|length }})</h2>
+<p class="muted">
+  These employees are accepted, but their manager reference could not be
+  resolved. They produce no reporting relationship and are not roots.
+</p>
+{% include "preview/_error_table.html" with page=manager_errors_page label="Manager errors" empty_message="Every manager reference resolved." %}
+
+<h2>Root employees ({{ result.roots|length }})</h2>
+<p class="muted">No manager_id and no manager_email.</p>
+{% include "preview/_employee_table.html" with page=roots_page label="Root employees" empty_message="No root employees. Every accepted employee reports to someone." %}
+
+<h2>Managers ({{ result.manager_count }})</h2>
+{% if managers_page.total %}
+  <table>
+    <thead><tr><th>employee_id</th><th>Name</th><th>Department</th><th>Direct reports</th></tr></thead>
+    <tbody>
+    {% for manager in managers_page.rows %}
+      <tr>
+        <td>{{ manager.employee.employee_id }}</td>
+        <td>{{ manager.employee.employee_name|default:"—" }}</td>
+        <td>{{ manager.employee.department|default:"—" }}</td>
+        <td class="num">{{ manager.direct_reports }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% include "preview/_pagination.html" with page=managers_page label="Managers" %}
+{% else %}
+  <p class="empty">No reporting relationships were resolved.</p>
+{% endif %}
+
+<h2>Employees in a reporting cycle ({{ result.cyclic_employees|length }})</h2>
+<p class="muted">
+  Members of a cycle only. Employees who report into a cycle without being part
+  of one are not listed here.
+</p>
+{% include "preview/_employee_table.html" with page=cycles_page label="Employees in a reporting cycle" empty_message="No reporting cycles found." %}
+{% endblock %}

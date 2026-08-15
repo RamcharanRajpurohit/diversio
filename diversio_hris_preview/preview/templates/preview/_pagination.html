@@ -1,0 +1,14 @@
+{% if page.total > page.page.paginator.per_page %}
+  <nav class="pager" aria-label="{{ label }} pagination">
+    {% if page.prev_url %}
+      <a href="{{ page.prev_url }}">Previous</a>
+    {% endif %}
+    <span>
+      Page {{ page.page.number }} of {{ page.page.paginator.num_pages }}
+      · showing {{ page.rows|length }} of {{ page.total }}
+    </span>
+    {% if page.next_url %}
+      <a href="{{ page.next_url }}">Next</a>
+    {% endif %}
+  </nav>
+{% endif %}
